@@ -2,23 +2,23 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from . import models
 
-from schemas import Job
+from .schemas import Job
 
 
 def create_job(db: Session, job: Job):
     db_job = models.Jobs(
-        id=job.id,
         company_name=job.company_name,
         title=job.title,
         location=job.location,
         salary=job.salary,
         yoe=job.yoe,
-        work_loc=job.workLoc,
-        date_applied=job.dateApplied,
+        workLoc=job.workLoc,  # Ensure this matches the model
+        dateApplied=job.dateApplied,
+        jobURL=job.jobURL,
     )
     db.add(db_job)
     db.commit()
-    db.refresh()
+    db.refresh(db_job)
 
     return db_job
 
@@ -35,7 +35,7 @@ def update_job(db: Session, job_id: int, updated_job: dict):
 
     db.add()
     db.commit()
-    db.refresh()
+    db.refresh(db_job)
 
     return db_job
 

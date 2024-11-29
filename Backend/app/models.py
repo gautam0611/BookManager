@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Date
-from database import Base
+from .database import Base
 
 
 class Jobs(Base):
@@ -11,5 +11,6 @@ class Jobs(Base):
     location = Column(String, unique=True, index=True)
     salary = Column(Integer, unique=True, index=True)
     yoe = Column(String, unique=True, index=True)
-    work_loc = Column(String, unique=True, index=True)
-    date_applied = Column(Date, unique=True, index=True)
+    workLoc = Column(String, unique=True, index=True)
+    dateApplied = Column(Date, unique=True, index=True)
+    jobURL = Column(String, unique=True, index=True)

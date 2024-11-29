@@ -1,7 +1,7 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
-from Backend import schemas
-import database
+from . import schemas
+from . import database
 
 from . import crud
 
@@ -39,12 +39,22 @@ def get_all_jobs(company_name: str, db: Session = Depends(get_db)):
 
 
 @app.post("/job", response_model=schemas.Job)
-def add_job(job: schemas.Job, db: Session = Depends(get_db)):
-    return crud.create_job(db, job)
+def add_job(job: schemas.JobCreate, db: Session = Depends(get_db)):
+    db_job = schemas.JobCreate(
+        company_name=job.company_name,
+        title=job.title,
+        location=job.location,
+        salary=job.salary,
+        yoe=job.yoe,
+        workLoc=job.workLoc,
+        dateApplied=job.dateApplied,
+        jobURL=job.jobURL,
+    )
+    return crud.create_job(db, db_job)
 
 
 @app.put("/job/{job_id}", response_model=schemas.Job)
-def update_job(job_id: int, new_job: schemas.Job, db: Session = Depends(get_db)):
+def update_job(job_id: int, new_job: schemas.JobCreate, db: Session = Depends(get_db)):
     db_job = crud.get_job(db, job_id)
     if not db_job:
         raise HTTPException(status_code=404, detail="Job not found")
