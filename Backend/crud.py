@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from . import models
 
@@ -22,8 +23,21 @@ def create_job(db: Session, job: Job):
     return db_job
 
 
-def update_job():
-    pass
+def update_job(db: Session, job_id: int, updated_job: dict):
+    db_job = db.query(models.Jobs).filter(models.Jobs.id == job_id).first()
+
+    if not db_job:
+        raise HTTPException(status_code=404, detail="Job does not exist")
+
+    for key, val in updated_job.items():
+        if hasattr(db_job, key):
+            setattr(db_job, key, val)
+
+    db.add()
+    db.commit()
+    db.refresh()
+
+    return db_job
 
 
 def get_job(db: Session, job_id: int):

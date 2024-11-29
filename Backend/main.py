@@ -44,10 +44,16 @@ def add_job(job: schemas.Job, db: Session = Depends(get_db)):
 
 
 @app.put("/job/{job_id}", response_model=schemas.Job)
-def update_job(job_id: int, new_job: schemas.Job):
-    pass
+def update_job(job_id: int, new_job: schemas.Job, db: Session = Depends(get_db)):
+    db_job = crud.get_job(db, job_id)
+    if not db_job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    return crud.update_job(db, job_id, new_job)
 
 
 @app.delete("/job/{job_id}", response_model=schemas.Job)
 def delete_job(job_id: int, db: Session = Depends(get_db)):
+    db_job = crud.get_job(db, job_id)
+    if not db_job:
+        raise HTTPException(status_code=404, detail="Job not found")
     return crud.delete_job(db, job_id)
