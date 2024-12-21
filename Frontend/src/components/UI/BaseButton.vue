@@ -15,34 +15,17 @@ export default defineComponent({
 
 <style scoped>
 button {
-  padding: 0.75rem 1.5rem;
-  font-family: inherit;
-  background-color: #3a0061;
-  border: 1px solid #3a0061;
-  color: white;
-  cursor: pointer;
-}
-
-.rounded {
-  border-radius: 15px;
-}
-
-.default {
-  border-radius: 0;
-}
-
-/* button {
-  padding: 0.75rem 1.5rem;
-  font-family: inherit;
-  background-color: #3a0061;
-  border: 1px solid #3a0061;
-  color: white;
-  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding: 5rem;
+  margin: 3rem auto;
+  max-width: 60rem;
+  font-size: 30px;
 }
 
 button:hover,
 button:active {
-  background-color: #270041;
+  background-color: #05d4f9;
   border-color: #270041;
 }
 
@@ -55,5 +38,5 @@ button:active {
 .flat:hover,
 .flat:active {
   background-color: #edd2ff;
-} */
+}
 </style>

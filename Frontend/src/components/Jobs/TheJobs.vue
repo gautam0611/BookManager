@@ -1,6 +1,8 @@
 <template>
-  <base-button @click="setSelectedTab('add-a-job')" :mode="addAJobButton">Add a Job</base-button>
-  <base-button @click="setSelectedTab('applied-job')" :mode="appliedJobButton">View Applied Jobs</base-button>
+  <div class="button-container">
+    <base-button @click="setSelectedTab('add-a-job')" :mode="addAJobButton">Add a Job</base-button>
+    <base-button @click="setSelectedTab('applied-job')" :mode="appliedJobButton">View Applied Jobs</base-button>
+  </div>
   <keep-alive>
     <component :is="selectedTab"></component>
   </keep-alive>
@@ -29,11 +31,24 @@ export default defineComponent({
   },
   computed: {
     addAJobButton(): string | null {
-      return this.selectedTab === 'add-a-job' ? null : 'rounded';
+      return this.selectedTab === 'add-a-job' ? null : 'flat';
     },
     appliedJobButton(): string | null {
-      return this.selectedTab === 'applied-job' ? null : 'rounded';
+      return this.selectedTab === 'applied-job' ? null : 'flat';
     }
   },
 });
 </script>
+
+<style scoped>
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* stack the buttons one on top of another*/
+  justify-content: center;
+  height: 100vh;
+  gap: 20px;
+
+}
+</style>
