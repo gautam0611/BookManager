@@ -1,10 +1,19 @@
-<script setup lang="ts">
-import HomePage from './components/HomePage.vue';
+<template>
+  <the-header title="Job Applier"></the-header>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import TheHeader from './components/Layout/TheHeader.vue';
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    TheHeader
+  }
+});
 
 </script>
 
-<template>
-  <home-page></home-page>
-</template>
 
 <style scoped></style>
