@@ -10,15 +10,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-// import AddAJob from './AddAJob.vue';
+import AddAJob from './AddAJob.vue';
 // import AppliedJob from './AppliedJob.vue';
 
 export default defineComponent({
   name: 'TheJobs',
-  // components: {
-  //   AddAJob,
-  //   AppliedJob
-  // },
+  components: {
+    AddAJob,
+    // AppliedJob
+  },
   data() {
     return {
       selectedTab: 'add-a-job'
