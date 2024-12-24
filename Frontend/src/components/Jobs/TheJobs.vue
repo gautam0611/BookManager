@@ -21,7 +21,8 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedTab: 'add-a-job'
+      selectedTab: 'applied-jobs',
+      allJobs: []
     }
   },
   methods: {
@@ -43,12 +44,12 @@ export default defineComponent({
 <style scoped>
 .button-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  /* align-items: center; */
   /* stack the buttons one on top of another*/
   justify-content: center;
-  height: 100vh;
-  gap: 20px;
+  height: 10vh;
+  gap: 5px;
 
 }
 </style>

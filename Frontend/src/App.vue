@@ -1,5 +1,5 @@
 <template>
-  <the-header title="Job Applier"></the-header>
+  <the-header title="Job Tracker"></the-header>
   <the-jobs></the-jobs>
 </template>
 
