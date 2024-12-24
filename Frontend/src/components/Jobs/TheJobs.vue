@@ -45,11 +45,8 @@ export default defineComponent({
 .button-container {
   display: flex;
   flex-direction: row;
-  /* align-items: center; */
-  /* stack the buttons one on top of another*/
   justify-content: center;
   height: 10vh;
   gap: 5px;
-
 }
 </style>
