@@ -12,18 +12,17 @@
           <th><b>Date Applied</b></th>
         </tr>
       </thead>
-      <slot name="rows"></slot>
       <!-- <tbody>
-      <tr v-for="job in jobs" :key=job.id>
-        <td>{{ job.companyName }}</td>
-        <td>{{ job.title }}</td>
-        <td>{{ job.location }}</td>
-        <td>{{ job.salary }}</td>
-        <td>{{ job.yoe }}</td>
-        <td>{{ job.hybridOrRemote }}</td>
-        <td>{{ job.dateApplied }}</td>
-      </tr>
-    </tbody> -->
+        <tr v-for="job in jobs" :key=job.id>
+          <td>{{ job.companyName }}</td>
+          <td>{{ job.title }}</td>
+          <td>{{ job.location }}</td>
+          <td>{{ job.salary }}</td>
+          <td>{{ job.yoe }}</td>
+          <td>{{ job.hybridOrRemote }}</td>
+          <td>{{ job.dateApplied }}</td>
+        </tr>
+      </tbody> -->
     </table>
   </div>
 </template>

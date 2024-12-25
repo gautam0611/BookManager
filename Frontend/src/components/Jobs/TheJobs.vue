@@ -28,7 +28,7 @@ export default defineComponent({
   methods: {
     setSelectedTab(tab: string) {
       this.selectedTab = tab;
-    }
+    },
   },
   computed: {
     addAJobButton(): string | null {
@@ -38,6 +38,11 @@ export default defineComponent({
       return this.selectedTab === 'applied-job' ? null : 'flat';
     }
   },
+  provide() {
+    return {
+
+    }
+  }
 });
 </script>
 
