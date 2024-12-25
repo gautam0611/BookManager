@@ -17,7 +17,8 @@ class Job(JobBase):
     id: int
 
     class Config:
-        from_attributes = True
+        orm_mode = True
+        # from_attributes = True
 
 
 class JobCreate(JobBase):

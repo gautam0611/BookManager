@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from . import schemas
@@ -30,11 +31,19 @@ def get_jobs(job_id: int, db: Session = Depends(get_db)):
     return db_job
 
 
-@app.get("/all_jobs/{company_name}", response_model=schemas.Job)
-def get_all_jobs(company_name: str, db: Session = Depends(get_db)):
-    db_jobs = crud.get_all_jobs(db, company_name=company_name)
+@app.get("/all_jobs_by_company/{company_name}", response_model=schemas.Job)
+def get_all_jobs_by_company(company_name: str, db: Session = Depends(get_db)):
+    db_jobs = crud.get_all_jobs_by_company(db, company_name=company_name)
     if not db_jobs:
         raise HTTPException(status_code=404, detail="Jobs not found for company")
+    return db_jobs
+
+
+@app.get("/all_jobs", response_model=List[schemas.Job])
+def get_all_jobs(db: Session = Depends(get_db)):
+    db_jobs = crud.get_all_jobs(db)
+    if not db_jobs:
+        raise HTTPException(status_code=404, detail="No jobs found")
     return db_jobs
 
 
