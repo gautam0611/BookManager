@@ -23,6 +23,9 @@
           <td>{{ job.workLoc }}</td>
           <td>{{ job.dateApplied }}</td>
           <td>{{ job.jobURL }}</td>
+          <div class="delete-container">
+            <button>Delete Job</button>
+          </div>
         </tr>
       </tbody>
     </table>
@@ -89,7 +92,7 @@ export default defineComponent({
 table {
   width: 80%;
   /* Make the table take full width of the container */
-  /* border-collapse: collapse; */
+  border-collapse: collapse;
   /* Collapse borders for a clean look */
   table-layout: fixed;
   /* Ensure cells maintain equal width */

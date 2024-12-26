@@ -38,11 +38,6 @@ export default defineComponent({
       return this.selectedTab === 'applied-job' ? null : 'flat';
     }
   },
-  provide() {
-    return {
-
-    }
-  }
 });
 </script>
 

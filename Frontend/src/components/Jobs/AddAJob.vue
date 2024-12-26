@@ -4,23 +4,23 @@
       <h1>Add a Job</h1>
       <div class="form-control">
         <label for="company-name"><b>Company Name:</b></label>
-        <input id="company-name" type="text" ref="companyName">
+        <input id="company-name" type="text" v-model="companyName">
       </div>
       <div class="form-control">
         <label for="title"><b>Title:</b></label>
-        <input id="title" type="text" ref="title">
+        <input id="title" type="text" v-model="title">
       </div>
       <div class="form-control">
         <label for="location"><b>Location:</b></label>
-        <input id="location" type="text" ref="location">
+        <input id="location" type="text" v-model="location">
       </div>
       <div class="form-control">
         <label for="salary"><b>Salary:</b></label>
-        <input id="salary" type="text" ref="salary">
+        <input id="salary" type="text" v-model="salary">
       </div>
       <div class="form-control">
         <label for="yoe"><b>YOE Required:</b></label>
-        <input id="yoe" type="text" ref="yoe">
+        <input id="yoe" type="text" v-model="yoe">
       </div>
       <div class="form-control">
         <label for="hybrid/remote"><b>Hybrid/Remote:</b></label>
@@ -35,14 +35,15 @@
       </div>
       <div class="form-control">
         <label for="date-applied"><b>Date Applied:</b></label>
-        <input id="date-applied" type="text" ref="dateApplied">
+        <input id="date-applied" type="text" v-model="dateApplied">
       </div>
       <div class="form-control">
         <label for="jobURL"><b>Job URL:</b></label>
-        <input id="jobURL" type="text" ref="jobURL">
+        <input id="jobURL" type="text" v-model="jobURL">
       </div>
       <div class="button-class">
         <button>Add Job</button>
+        <button @click="clearForm">Clear Form</button>
       </div>
     </form>
     <p v-if="invalidInput">One or more inputs is empty. Please check</p>
@@ -55,22 +56,30 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   data() {
     return {
-      invalidInput: false
+      invalidInput: false,
+      companyName: '',
+      salary: null,
+      workLoc: '',
+      yoe: '',
+      dateApplied: null,
+      jobURL: '',
+      title: '',
+      location: ''
     }
   },
   methods: {
     submitData() {
       // getting our refs
-      const companyName = this.$refs.companyName as HTMLInputElement;
-      const title = this.$refs.title as HTMLInputElement;
-      const salary = this.$refs.salary as HTMLInputElement;
-      const location = this.$refs.location as HTMLInputElement;
-      const yoe = this.$refs.yoe as HTMLInputElement;
+      // const companyName = this.$refs.companyName as HTMLInputElement;
+      // const title = this.$refs.title as HTMLInputElement;
+      // const salary = this.$refs.salary as HTMLInputElement;
+      // const location = this.$refs.location as HTMLInputElement;
+      // const yoe = this.$refs.yoe as HTMLInputElement;
       const hybridOrRemote: string = this.$refs.hybridRadio !== undefined ? 'hybrid' : 'remote';
-      const dateApplied = this.$refs.dateApplied as HTMLInputElement;
-      const jobURL = this.$refs.jobURL as HTMLInputElement;
+      // const dateApplied = this.$refs.dateApplied as HTMLInputElement;
+      // const jobURL = this.$refs.jobURL as HTMLInputElement;
 
-      if (companyName.value === '' || title.value === '' || salary.value === '' || location.value === '' || yoe.value === '' || hybridOrRemote === '' || dateApplied.value === '' || jobURL.value === '') {
+      if (this.companyName === '' || this.title === '' || this.salary === '' || this.location === '' || this.yoe === '' || hybridOrRemote === '' || this.dateApplied === '' || this.jobURL === '') {
         this.invalidInput = true;
         return;
       }
@@ -82,14 +91,14 @@ export default defineComponent({
           'Content-type': 'application/json'
         },
         body: JSON.stringify({
-          company_name: companyName.value,
-          title: title.value,
-          salary: salary.value,
-          location: location.value,
-          yoe: yoe.value,
+          company_name: this.companyName,
+          title: this.title,
+          salary: this.salary,
+          location: this.location,
+          yoe: this.yoe,
           workLoc: hybridOrRemote, // we just return a string
-          dateApplied: new Date(dateApplied.value).toISOString(),
-          jobURL: jobURL.value
+          dateApplied: new Date(this.dateApplied).toISOString(),
+          jobURL: this.jobURL
         })
       }).then((response) => {
         if (!response.ok) {
@@ -104,8 +113,21 @@ export default defineComponent({
           console.error("Error:", error);
         });
 
-      // TO DO: clear form
+      // clear our form after adding
+      this.clearForm();
     },
+    clearForm() {
+      this.companyName = '';
+      this.location = '';
+      this.salary = null;
+      this.yoe = '';
+      this.dateApplied = null;
+      this.jobURL = '';
+      this.title = '';
+    }
+  },
+  mounted() {
+    this.submitData();
   }
 });
 </script>
