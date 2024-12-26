@@ -103,6 +103,8 @@ export default defineComponent({
         .catch((error) => {
           console.error("Error:", error);
         });
+
+      // TO DO: clear form
     },
   }
 });

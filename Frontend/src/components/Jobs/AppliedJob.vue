@@ -26,9 +26,9 @@
         </tr>
       </tbody>
     </table>
-    <div>
+    <!-- <div>
       <button @click="getAllJobs">get all jobs</button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -70,6 +70,9 @@ export default defineComponent({
           console.error("Error:", error);
         });
     }
+  },
+  mounted() {
+    this.getAllJobs();
   }
 
 })
@@ -81,5 +84,14 @@ export default defineComponent({
   flex-direction: row;
   justify-content: center;
   margin-top: 10%;
+}
+
+table {
+  width: 80%;
+  /* Make the table take full width of the container */
+  /* border-collapse: collapse; */
+  /* Collapse borders for a clean look */
+  table-layout: fixed;
+  /* Ensure cells maintain equal width */
 }
 </style>
