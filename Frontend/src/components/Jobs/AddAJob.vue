@@ -66,11 +66,11 @@ export default defineComponent({
       const salary = this.$refs.salary as HTMLInputElement;
       const location = this.$refs.location as HTMLInputElement;
       const yoe = this.$refs.yoe as HTMLInputElement;
-      const hybridOrRemote = this.$refs.hybridRadio !== undefined ? this.$refs.hybridRadio as HTMLInputElement : this.$refs.remoteRadio as HTMLInputElement;
+      const hybridOrRemote: string = this.$refs.hybridRadio !== undefined ? 'hybrid' : 'remote';
       const dateApplied = this.$refs.dateApplied as HTMLInputElement;
       const jobURL = this.$refs.jobURL as HTMLInputElement;
 
-      if (companyName.value === '' || title.value === '' || salary.value === '' || location.value === '' || yoe.value === '' || hybridOrRemote.value === '' || dateApplied === '') {
+      if (companyName.value === '' || title.value === '' || salary.value === '' || location.value === '' || yoe.value === '' || hybridOrRemote === '' || dateApplied.value === '' || jobURL.value === '') {
         this.invalidInput = true;
         return;
       }
@@ -87,8 +87,8 @@ export default defineComponent({
           salary: salary.value,
           location: location.value,
           yoe: yoe.value,
-          workLoc: hybridOrRemote.value,
-          dateApplied: dateApplied.value,
+          workLoc: hybridOrRemote, // we just return a string
+          dateApplied: new Date(dateApplied.value).toISOString(),
           jobURL: jobURL.value
         })
       }).then((response) => {

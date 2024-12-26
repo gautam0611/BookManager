@@ -24,6 +24,9 @@
         </tr>
       </tbody> -->
     </table>
+    <div>
+      <button @click="getAllJobs">get all jobs</button>
+    </div>
   </div>
 </template>
 
@@ -32,7 +35,28 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   props: ['company-name', 'title', 'location', 'salary', 'yoe', 'hybrid/remote', 'date-applied'],
-  inject: ['jobs']
+  data() {
+    return {
+      jobs: []
+    }
+  },
+  methods: {
+    getAllJobs() {
+      fetch("http://127.0.0.1:8000/all_jobs").then((response) => {
+        if (!response.ok) {
+          console.log(response);
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }
 
 })
 </script>
