@@ -6,10 +6,10 @@ class JobBase(BaseModel):
     company_name: str
     title: str
     location: str
-    salary: int
+    salary: str
     yoe: str
     workLoc: str
-    dateApplied: datetime
+    dateApplied: str
     jobURL: str
 
 

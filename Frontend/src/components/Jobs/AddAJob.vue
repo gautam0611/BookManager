@@ -1,6 +1,6 @@
 <template>
   <base-card>
-    <form @submit="submitData">
+    <form @submit.prevent="submitData">
       <h1>Add a Job</h1>
       <div class="form-control">
         <label for="company-name"><b>Company Name:</b></label>
@@ -35,12 +35,17 @@
       </div>
       <div class="form-control">
         <label for="date-applied"><b>Date Applied:</b></label>
-        <input id="date-applied" type="text" ref="date-applied">
+        <input id="date-applied" type="text" ref="dateApplied">
+      </div>
+      <div class="form-control">
+        <label for="jobURL"><b>Job URL:</b></label>
+        <input id="jobURL" type="text" ref="jobURL">
       </div>
       <div class="button-class">
         <button>Add Job</button>
       </div>
     </form>
+    <p v-if="invalidInput">One or more inputs is empty. Please check</p>
   </base-card>
 </template>
 
@@ -48,6 +53,11 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+  data() {
+    return {
+      invalidInput: false
+    }
+  },
   methods: {
     submitData() {
       // getting our refs
@@ -58,6 +68,13 @@ export default defineComponent({
       const yoe = this.$refs.yoe as HTMLInputElement;
       const hybridOrRemote = this.$refs.hybridRadio !== undefined ? this.$refs.hybridRadio as HTMLInputElement : this.$refs.remoteRadio as HTMLInputElement;
       const dateApplied = this.$refs.dateApplied as HTMLInputElement;
+      const jobURL = this.$refs.jobURL as HTMLInputElement;
+
+      if (companyName.value === '' || title.value === '' || salary.value === '' || location.value === '' || yoe.value === '' || hybridOrRemote.value === '' || dateApplied === '') {
+        this.invalidInput = true;
+        return;
+      }
+      this.invalidInput = false;
 
       fetch("http://127.0.0.1:8000/job", {
         method: 'POST',
@@ -65,21 +82,27 @@ export default defineComponent({
           'Content-type': 'application/json'
         },
         body: JSON.stringify({
-          companyName: companyName.value,
+          company_name: companyName.value,
           title: title.value,
           salary: salary.value,
           location: location.value,
           yoe: yoe.value,
-          hybridOrRemote: hybridOrRemote.value,
-          dateApplied: dateApplied.value
+          workLoc: hybridOrRemote.value,
+          dateApplied: dateApplied.value,
+          jobURL: jobURL.value
         })
-      }).then(response => {
-        if (response.ok) {
-          return response.json();
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      }).catch((error) => {
-        console.log(`Here is the error: ${error}`);
-      });
+        return response.json();
+      })
+        .then((data) => {
+          console.log("Response:", data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     },
   }
 });
