@@ -10,19 +10,21 @@
           <th><b>Yoe</b></th>
           <th><b>Hybrid/Remote</b></th>
           <th><b>Date Applied</b></th>
+          <th><b>Job URL</b></th>
         </tr>
       </thead>
-      <!-- <tbody>
+      <tbody>
         <tr v-for="job in jobs" :key=job.id>
-          <td>{{ job.companyName }}</td>
+          <td>{{ job.company_name }}</td>
           <td>{{ job.title }}</td>
           <td>{{ job.location }}</td>
           <td>{{ job.salary }}</td>
           <td>{{ job.yoe }}</td>
-          <td>{{ job.hybridOrRemote }}</td>
+          <td>{{ job.workLoc }}</td>
           <td>{{ job.dateApplied }}</td>
+          <td>{{ job.jobURL }}</td>
         </tr>
-      </tbody> -->
+      </tbody>
     </table>
     <div>
       <button @click="getAllJobs">get all jobs</button>
@@ -32,12 +34,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Job from '../../../interfaces.ts';
 
 export default defineComponent({
   props: ['company-name', 'title', 'location', 'salary', 'yoe', 'hybrid/remote', 'date-applied'],
   data() {
     return {
-      jobs: []
+      jobs: [] as Job[]
     }
   },
   methods: {
@@ -50,7 +53,18 @@ export default defineComponent({
         return response.json();
       })
         .then((data) => {
-          console.log(data);
+          const jobs: Job[] = Object.keys(data).map((id) => ({
+            id, // Use the key as the ID
+            company_name: data[id].company_name,
+            title: data[id].title,
+            location: data[id].location,
+            salary: Number(data[id].salary), // Ensure salary is a number
+            yoe: data[id].yoe,
+            workLoc: data[id].workLoc,
+            dateApplied: data[id].dateApplied,
+            jobURL: data[id].jobURL,
+          }));
+          this.jobs = jobs;
         })
         .catch((error) => {
           console.error("Error:", error);
