@@ -23,9 +23,11 @@
           <td>{{ job.workLoc }}</td>
           <td>{{ job.dateApplied }}</td>
           <td>{{ job.jobURL }}</td>
-          <div class="delete-container">
-            <button>Delete Job</button>
-          </div>
+          <td>
+            <div class="delete-container">
+              <button>Delete Job</button>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

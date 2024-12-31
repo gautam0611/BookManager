@@ -80,9 +80,11 @@ def update_job(job_id: int, new_job: schemas.JobCreate, db: Session = Depends(ge
     return crud.update_job(db, job_id, new_job)
 
 
-@app.delete("/job/{job_id}", response_model=schemas.Job)
+@app.delete("/job/{job_id}", response_model=dict)
 def delete_job(job_id: int, db: Session = Depends(get_db)):
-    db_job = crud.get_job(db, job_id)
-    if not db_job:
+    rows_deleted = crud.delete_job(db, job_id)
+
+    if rows_deleted == 0:
         raise HTTPException(status_code=404, detail="Job not found")
-    return crud.delete_job(db, job_id)
+
+    return rows_deleted

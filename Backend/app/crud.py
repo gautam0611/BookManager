@@ -53,8 +53,10 @@ def get_all_jobs_by_company(db: Session, company_name: str):
 
 
 def delete_job(db: Session, job_id: int):
-    return (
+    rows_deleted = (
         db.query(models.Jobs)
         .filter(models.Jobs.id == job_id)
         .delete(synchronize_session=False)
     )
+    db.commit()  # Ensure changes are committed
+    return {"job_id": job_id, "rows_deleted": rows_deleted}
