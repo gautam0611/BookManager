@@ -83,8 +83,6 @@ def update_job(job_id: int, new_job: schemas.JobCreate, db: Session = Depends(ge
 @app.delete("/job/{job_id}", response_model=dict)
 def delete_job(job_id: int, db: Session = Depends(get_db)):
     rows_deleted = crud.delete_job(db, job_id)
-
     if rows_deleted == 0:
         raise HTTPException(status_code=404, detail="Job not found")
-
     return rows_deleted

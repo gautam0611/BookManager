@@ -3,6 +3,7 @@
     <table border="1">
       <thead>
         <tr>
+          <th>id</th>
           <th><b>Company Name</b></th>
           <th><b>Title</b></th>
           <th><b>Location</b></th>
@@ -15,6 +16,7 @@
       </thead>
       <tbody>
         <tr v-for="job in jobs" :key=job.id>
+          <td>{{ job.id }}</td>
           <td>{{ job.company_name }}</td>
           <td>{{ job.title }}</td>
           <td>{{ job.location }}</td>
@@ -25,15 +27,12 @@
           <td>{{ job.jobURL }}</td>
           <td>
             <div class="delete-container">
-              <button>Delete Job</button>
+              <button @click="deleteJob(job.id)">Delete Job</button>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
-    <!-- <div>
-      <button @click="getAllJobs">get all jobs</button>
-    </div> -->
   </div>
 </template>
 
@@ -58,22 +57,39 @@ export default defineComponent({
         return response.json();
       })
         .then((data) => {
-          const jobs: Job[] = Object.keys(data).map((id) => ({
-            id, // Use the key as the ID
-            company_name: data[id].company_name,
-            title: data[id].title,
-            location: data[id].location,
-            salary: Number(data[id].salary), // Ensure salary is a number
-            yoe: data[id].yoe,
-            workLoc: data[id].workLoc,
-            dateApplied: data[id].dateApplied,
-            jobURL: data[id].jobURL,
+          this.jobs = data.map((job: Job) => ({
+            id: job.id,
+            company_name: job.company_name,
+            title: job.title,
+            location: job.location,
+            salary: Number(job.salary), // Ensure salary is a number
+            yoe: job.yoe,
+            workLoc: job.workLoc,
+            dateApplied: job.dateApplied,
+            jobURL: job.jobURL,
           }));
-          this.jobs = jobs;
         })
         .catch((error) => {
           console.error("Error:", error);
         });
+    },
+    deleteJob(jobId: string) {
+      fetch(`http://127.0.0.1:8000/job/${jobId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json'
+        },
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      }).catch((error) => {
+        console.error("Error:", error);
+      });
+
+      // remove the job from local state
+      this.jobs = this.jobs.filter(job => job.id !== jobId);
     }
   },
   mounted() {
