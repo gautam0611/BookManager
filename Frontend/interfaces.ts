@@ -9,7 +9,3 @@ export default interface Job {
   dateApplied: Date;
   jobURL: string;
 }
-
-// interface ApiResponse {
-//   [key: string]: Omit<Job, "id">;
-// }

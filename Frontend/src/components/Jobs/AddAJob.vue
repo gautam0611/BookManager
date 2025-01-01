@@ -26,11 +26,11 @@
         <label for="hybrid/remote"><b>Hybrid/Remote:</b></label>
         <div>
           <label for="hybrid">Hybrid</label>
-          <input id="hybrid" type="radio" ref="hybridRadio">
+          <input id="hybrid" name="workType" type="radio" ref="hybridRadio">
         </div>
         <div>
           <label for="remote">Remote</label>
-          <input id="remote" type="radio" ref="remoteRadio">
+          <input id="remote" name="workType" type="radio" ref="remoteRadio">
         </div>
       </div>
       <div class="form-control">
@@ -70,14 +70,7 @@ export default defineComponent({
   methods: {
     submitData() {
       // getting our refs
-      // const companyName = this.$refs.companyName as HTMLInputElement;
-      // const title = this.$refs.title as HTMLInputElement;
-      // const salary = this.$refs.salary as HTMLInputElement;
-      // const location = this.$refs.location as HTMLInputElement;
-      // const yoe = this.$refs.yoe as HTMLInputElement;
       const hybridOrRemote: string = this.$refs.hybridRadio !== undefined ? 'hybrid' : 'remote';
-      // const dateApplied = this.$refs.dateApplied as HTMLInputElement;
-      // const jobURL = this.$refs.jobURL as HTMLInputElement;
 
       if (this.companyName === '' || this.title === '' || this.salary === '' || this.location === '' || this.yoe === '' || hybridOrRemote === '' || this.dateApplied === '' || this.jobURL === '') {
         this.invalidInput = true;
@@ -157,7 +150,7 @@ input[type='text'] {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 20rem; */
+  gap: 50px
 }
 
 button {
@@ -168,7 +161,7 @@ button {
 
 button:hover,
 button:active {
-  background-color: #de1313;
-  border-color: #b80000;
+  background-color: #ab75e4;
+  border-color: #ab75e4;
 }
 </style>
