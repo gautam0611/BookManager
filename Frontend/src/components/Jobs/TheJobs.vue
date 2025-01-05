@@ -1,23 +1,25 @@
 <template>
   <div class="button-container">
-    <base-button @click="setSelectedTab('add-a-job')" :mode="addAJobButton">Add a Job</base-button>
-    <base-button @click="setSelectedTab('applied-job')" :mode="appliedJobButton">View Applied Jobs</base-button>
+    <router-link to="/addJob" class="router-button">
+      <base-button :mode="addAJobButton">Add a Job</base-button>
+    </router-link>
+    <router-link to="/appliedJobs" class="router-button">
+      <base-button :mode="appliedJobButton">View Applied Jobs</base-button>
+    </router-link>
   </div>
-  <keep-alive>
-    <component :is="selectedTab"></component>
-  </keep-alive>
+  <router-view />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import AddAJob from './AddAJob.vue';
-// import AppliedJob from './AppliedJob.vue';
+import AppliedJob from './AppliedJob.vue';
 
 export default defineComponent({
   name: 'TheJobs',
   components: {
     AddAJob,
-    // AppliedJob
+    AppliedJob
   },
   data() {
     return {
@@ -28,7 +30,7 @@ export default defineComponent({
   methods: {
     setSelectedTab(tab: string) {
       this.selectedTab = tab;
-    }
+    },
   },
   computed: {
     addAJobButton(): string | null {
@@ -48,5 +50,9 @@ export default defineComponent({
   justify-content: center;
   height: 10vh;
   gap: 5px;
+}
+
+.router-button {
+  text-decoration: none
 }
 </style>

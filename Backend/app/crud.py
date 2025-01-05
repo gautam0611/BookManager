@@ -44,13 +44,19 @@ def get_job(db: Session, job_id: int):
     return db.query(models.Jobs).filter(models.Jobs.id == job_id).first()
 
 
-def get_all_jobs(db: Session, company_name: str):
+def get_all_jobs(db: Session):
+    return db.query(models.Jobs).all()
+
+
+def get_all_jobs_by_company(db: Session, company_name: str):
     return db.query(models.Jobs).filter(models.Jobs.company_name == company_name)
 
 
 def delete_job(db: Session, job_id: int):
-    return (
+    rows_deleted = (
         db.query(models.Jobs)
         .filter(models.Jobs.id == job_id)
         .delete(synchronize_session=False)
     )
+    db.commit()  # Ensure changes are committed
+    return {"job_id": job_id, "rows_deleted": rows_deleted}

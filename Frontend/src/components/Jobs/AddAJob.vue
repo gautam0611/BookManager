@@ -1,45 +1,209 @@
 <template>
   <base-card>
-    <form>
+    <form @submit.prevent="submitData">
       <h1>Add a Job</h1>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: companyNameValidity === 'invalid' }">
         <label for="company-name"><b>Company Name:</b></label>
-        <input id="company-name" type="text">
+        <input id="company-name" type="text" v-model.trim="companyName" @blur="validateInput">
+        <p v-if="companyNameValidity === 'invalid'">Please enter a valid company name</p>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: titleValidity === 'invalid' }">
         <label for="title"><b>Title:</b></label>
-        <input id="title" type="text">
+        <input id="title" type="text" v-model="title" @blur="validateInput">
+        <p v-if="titleValidity === 'invalid'">Please enter a valid title</p>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: locationValidity === 'invalid' }">
         <label for="location"><b>Location:</b></label>
-        <input id="location" type="text">
+        <input id="location" type="text" v-model="location" @blur="validateInput">
+        <p v-if="locationValidity === 'invalid'">Please enter a valid location</p>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: salaryValidity === 'invalid' }">
         <label for="salary"><b>Salary:</b></label>
-        <input id="salary" type="text">
+        <input id="salary" type="text" v-model="salary" @blur="validateInput">
+        <p v-if="salaryValidity === 'invalid'">Please enter a valid salary</p>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: yoeValidity === 'invalid' }">
         <label for="yoe"><b>YOE Required:</b></label>
-        <input id="yoe" type="text">
+        <input id="yoe" type="text" v-model="yoe" @blur="validateInput">
+        <p v-if="yoeValidity === 'invalid'">Please enter a valid yoe</p>
       </div>
       <div class="form-control">
         <label for="hybrid/remote"><b>Hybrid/Remote:</b></label>
         <div>
           <label for="hybrid">Hybrid</label>
-          <input id="hybrid" type="radio">
+          <input id="hybrid" name="workType" type="radio" ref="hybridRadio">
         </div>
         <div>
           <label for="remote">Remote</label>
-          <input id="remote" type="radio">
+          <input id="remote" name="workType" type="radio" ref="remoteRadio">
         </div>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: companyNameValidity === 'invalid' }">
         <label for="date-applied"><b>Date Applied:</b></label>
-        <input id="date-applied" type="text">
+        <input id="date-applied" type="text" v-model="dateApplied">
+        <p v-if="dateAppliedValidity === 'invalid'">Please enter a valid date</p>
+      </div>
+      <div class="form-control" :class="{ invalid: companyNameValidity === 'invalid' }">
+        <label for="jobURL"><b>Job URL:</b></label>
+        <input id="jobURL" type="text" v-model="jobURL">
+        <p v-if="jobURLValidity === 'invalid'">Please enter a valid job url</p>
+      </div>
+      <div class="button-class">
+        <button>Add Job</button>
+        <button @click="clearForm">Clear Form</button>
       </div>
     </form>
+    <p v-if="invalidInput">One or more inputs is empty. Please check</p>
   </base-card>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { ValidityKeys } from '../../../types.ts';
+
+export default defineComponent({
+  data() {
+    return {
+      invalidInput: false,
+      companyName: '',
+      salary: null,
+      workLoc: '',
+      yoe: '',
+      dateApplied: null,
+      jobURL: '',
+      title: '',
+      location: '',
+      companyNameValidity: 'pending',
+      titleValidity: 'pending',
+      locationValidity: 'pending',
+      salaryValidity: 'pending',
+      yoeValidity: 'pending',
+      dateAppliedValidity: 'pending',
+      jobURLValidity: 'pending'
+    }
+  },
+  methods: {
+    submitData() {
+      // getting our refs
+      const hybridOrRemote: string = this.$refs.hybridRadio !== undefined ? 'hybrid' : 'remote';
+
+      if (this.companyName === '' || this.title === '' || this.salary === '' || this.location === '' || this.yoe === '' || hybridOrRemote === '' || this.dateApplied === '' || this.jobURL === '') {
+        this.invalidInput = true;
+        return;
+      }
+      this.invalidInput = false;
+
+      fetch("http://127.0.0.1:8000/job", {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          company_name: this.companyName,
+          title: this.title,
+          salary: this.salary,
+          location: this.location,
+          yoe: this.yoe,
+          workLoc: hybridOrRemote, // we just return a string
+          dateApplied: new Date(this.dateApplied).toISOString(),
+          jobURL: this.jobURL
+        })
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+        .then((data) => {
+          console.log("Response:", data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      // clear our form after adding
+      this.clearForm();
+    },
+    clearForm() {
+      this.companyName = '';
+      this.location = '';
+      this.salary = null;
+      this.yoe = '';
+      this.dateApplied = null;
+      this.jobURL = '';
+      this.title = '';
+    },
+    validateInput() {
+      // company name
+      if (this.companyName === '') {
+        this.companyNameValidity = 'invalid';
+      }
+      else {
+        this.companyNameValidity = 'valid'
+      }
+
+      // location
+      if (this.location === '') {
+        this.locationValidity = 'invalid';
+      }
+      else {
+        this.locationValidity = 'valid'
+      }
+
+      // salary
+      if (this.salary === null) {
+        this.salaryValidity = 'invalid';
+      }
+      else {
+        this.salaryValidity = 'valid'
+      }
+
+      // location
+      if (this.location === '') {
+        this.locationValidity = 'invalid';
+      }
+      else {
+        this.locationValidity = 'valid'
+      }
+
+      // years of experience
+      if (this.yoe === '') {
+        this.yoeValidity = 'invalid';
+      }
+      else {
+        this.yoeValidity = 'valid'
+      }
+
+      // date applied
+      if (this.dateApplied === '') {
+        this.dateAppliedValidity = 'invalid';
+      }
+      else {
+        this.dateAppliedValidity = 'valid'
+      }
+
+      // job url
+      if (this.jobURL === '') {
+        this.jobURLValidity = 'invalid';
+      }
+      else {
+        this.jobURLValidity = 'valid'
+      }
+
+      // title
+      if (this.title === '') {
+        this.titleValidity = 'invalid';
+      }
+      else {
+        this.titleValidity = 'valid'
+      }
+    }
+  },
+  mounted() {
+    this.submitData();
+  }
+});
+</script>
 
 <style scoped>
 input[type='radio'] {
@@ -60,5 +224,32 @@ input[type='text'] {
   display: block;
   width: 20rem;
   margin-top: 0.5rem;
+}
+
+.button-class {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px
+}
+
+button {
+  width: 10rem;
+  height: 3rem;
+  /* border-radius: 12px; */
+}
+
+button:hover,
+button:active {
+  background-color: #ab75e4;
+  border-color: #ab75e4;
+}
+
+.form-control.invalid input {
+  border-color: red;
+}
+
+.form-control.invalid label {
+  color: red;
 }
 </style>
