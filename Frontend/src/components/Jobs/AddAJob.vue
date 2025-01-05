@@ -3,24 +3,30 @@
     <form @submit.prevent="submitData">
       <h1>Add a Job</h1>
       <div class="form-control">
-        <label for="company-name"><b>Company Name:</b></label>
+        <label for="company-name" @blur="validateInput('companyName')"><b>Company Name:</b></label>
         <input id="company-name" type="text" v-model="companyName">
+        <p v-if="companyNameValidity === 'invalid'">Please enter a valid company name</p>
+        <p>{{ companyNameValidity }}</p>
       </div>
       <div class="form-control">
         <label for="title"><b>Title:</b></label>
         <input id="title" type="text" v-model="title">
+        <p v-if="titleValidity === 'invalid'">Please enter a valid title</p>
       </div>
       <div class="form-control">
         <label for="location"><b>Location:</b></label>
         <input id="location" type="text" v-model="location">
+        <p v-if="locationValidity === 'invalid'">Please enter a valid location</p>
       </div>
       <div class="form-control">
         <label for="salary"><b>Salary:</b></label>
         <input id="salary" type="text" v-model="salary">
+        <p v-if="salaryValidity === 'invalid'">Please enter a valid salary</p>
       </div>
       <div class="form-control">
         <label for="yoe"><b>YOE Required:</b></label>
         <input id="yoe" type="text" v-model="yoe">
+        <p v-if="yoeValidity === 'invalid'">Please enter a valid yoe</p>
       </div>
       <div class="form-control">
         <label for="hybrid/remote"><b>Hybrid/Remote:</b></label>
@@ -36,10 +42,12 @@
       <div class="form-control">
         <label for="date-applied"><b>Date Applied:</b></label>
         <input id="date-applied" type="text" v-model="dateApplied">
+        <p v-if="dateAppliedValidity === 'invalid'">Please enter a valid date</p>
       </div>
       <div class="form-control">
         <label for="jobURL"><b>Job URL:</b></label>
         <input id="jobURL" type="text" v-model="jobURL">
+        <p v-if="jobURLValidity === 'invalid'">Please enter a valid job url</p>
       </div>
       <div class="button-class">
         <button>Add Job</button>
@@ -64,7 +72,14 @@ export default defineComponent({
       dateApplied: null,
       jobURL: '',
       title: '',
-      location: ''
+      location: '',
+      companyNameValidity: 'pending',
+      titleValidity: 'pending',
+      locationValidity: 'pending',
+      salaryValidity: 'pending',
+      yoeValidity: 'pending',
+      dateAppliedValidity: 'pending',
+      jobURLValidity: 'pending'
     }
   },
   methods: {
@@ -117,7 +132,45 @@ export default defineComponent({
       this.dateApplied = null;
       this.jobURL = '';
       this.title = '';
-    }
+    },
+    // validateInput(inputField: string) {
+    //   switch (inputField) {
+    //     case 'companyName':
+    //       this.checkInput('companyNameValidity', this.companyName);
+    //       break;
+    //     case 'location':
+    //       this.checkInput('locationValidity', this.location);
+    //       break;
+    //     case 'salary':
+    //       this.checkInput('salaryValidity', this.salary);
+    //       break;
+    //     case 'yoe':
+    //       this.checkInput('yoeValidity', this.yoe);
+    //       break;
+    //     case 'dateApplied':
+    //       this.checkInput('dateAppliedValidity', this.dateApplied);
+    //       break;
+    //     case 'jobURL':
+    //       this.checkInput('jobURLValidity', this.jobURL);
+    //       break;
+    //     case 'title':
+    //       this.checkInput('titleValidity', this.title);
+    //       break;
+    //     default:
+    //       console.warn(`Unknown inputField: ${inputField}`);
+    //   }
+    // },
+    // checkInput(this: typeof defineComponent.prototype, validityProp: keyof typeof this, value: string | null) {
+    //   if (!value || value === '') {
+    //     this.setInputValidity(validityProp, 'invalid');
+    //   } else {
+    //     this.setInputValidity(validityProp, 'valid');
+    //   }
+    // },
+    // setInputValidity(this: typeof defineComponent.prototype, prop: keyof typeof this, validity: string) {
+    //   this[prop] = validity; // Update the specific validity property
+    //   console.log(this[prop]);
+    // }
   },
   mounted() {
     this.submitData();

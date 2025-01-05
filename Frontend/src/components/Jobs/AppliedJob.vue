@@ -43,7 +43,7 @@ export default defineComponent({
   props: ['company-name', 'title', 'location', 'salary', 'yoe', 'hybrid/remote', 'date-applied'],
   data() {
     return {
-      jobs: [] as Job[]
+      jobs: [] as Job[],
     }
   },
   methods: {
