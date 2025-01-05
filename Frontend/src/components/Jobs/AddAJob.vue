@@ -2,31 +2,29 @@
   <base-card>
     <form @submit.prevent="submitData">
       <h1>Add a Job</h1>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: companyNameValidity === 'invalid' }">
         <label for="company-name"><b>Company Name:</b></label>
         <input id="company-name" type="text" v-model.trim="companyName" @blur="validateInput">
         <p v-if="companyNameValidity === 'invalid'">Please enter a valid company name</p>
-        <p>{{ companyNameValidity }}</p>
-        <p>{{ companyName }}</p>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: titleValidity === 'invalid' }">
         <label for="title"><b>Title:</b></label>
-        <input id="title" type="text" v-model="title">
+        <input id="title" type="text" v-model="title" @blur="validateInput">
         <p v-if="titleValidity === 'invalid'">Please enter a valid title</p>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: locationValidity === 'invalid' }">
         <label for="location"><b>Location:</b></label>
-        <input id="location" type="text" v-model="location">
+        <input id="location" type="text" v-model="location" @blur="validateInput">
         <p v-if="locationValidity === 'invalid'">Please enter a valid location</p>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: salaryValidity === 'invalid' }">
         <label for="salary"><b>Salary:</b></label>
-        <input id="salary" type="text" v-model="salary">
+        <input id="salary" type="text" v-model="salary" @blur="validateInput">
         <p v-if="salaryValidity === 'invalid'">Please enter a valid salary</p>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: yoeValidity === 'invalid' }">
         <label for="yoe"><b>YOE Required:</b></label>
-        <input id="yoe" type="text" v-model="yoe">
+        <input id="yoe" type="text" v-model="yoe" @blur="validateInput">
         <p v-if="yoeValidity === 'invalid'">Please enter a valid yoe</p>
       </div>
       <div class="form-control">
@@ -40,12 +38,12 @@
           <input id="remote" name="workType" type="radio" ref="remoteRadio">
         </div>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: companyNameValidity === 'invalid' }">
         <label for="date-applied"><b>Date Applied:</b></label>
         <input id="date-applied" type="text" v-model="dateApplied">
         <p v-if="dateAppliedValidity === 'invalid'">Please enter a valid date</p>
       </div>
-      <div class="form-control">
+      <div class="form-control" :class="{ invalid: companyNameValidity === 'invalid' }">
         <label for="jobURL"><b>Job URL:</b></label>
         <input id="jobURL" type="text" v-model="jobURL">
         <p v-if="jobURLValidity === 'invalid'">Please enter a valid job url</p>
@@ -61,6 +59,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { ValidityKeys } from '../../../types.ts';
 
 export default defineComponent({
   data() {
@@ -135,51 +134,70 @@ export default defineComponent({
       this.title = '';
     },
     validateInput() {
+      // company name
       if (this.companyName === '') {
         this.companyNameValidity = 'invalid';
       }
       else {
         this.companyNameValidity = 'valid'
       }
+
+      // location
+      if (this.location === '') {
+        this.locationValidity = 'invalid';
+      }
+      else {
+        this.locationValidity = 'valid'
+      }
+
+      // salary
+      if (this.salary === null) {
+        this.salaryValidity = 'invalid';
+      }
+      else {
+        this.salaryValidity = 'valid'
+      }
+
+      // location
+      if (this.location === '') {
+        this.locationValidity = 'invalid';
+      }
+      else {
+        this.locationValidity = 'valid'
+      }
+
+      // years of experience
+      if (this.yoe === '') {
+        this.yoeValidity = 'invalid';
+      }
+      else {
+        this.yoeValidity = 'valid'
+      }
+
+      // date applied
+      if (this.dateApplied === '') {
+        this.dateAppliedValidity = 'invalid';
+      }
+      else {
+        this.dateAppliedValidity = 'valid'
+      }
+
+      // job url
+      if (this.jobURL === '') {
+        this.jobURLValidity = 'invalid';
+      }
+      else {
+        this.jobURLValidity = 'valid'
+      }
+
+      // title
+      if (this.title === '') {
+        this.titleValidity = 'invalid';
+      }
+      else {
+        this.titleValidity = 'valid'
+      }
     }
-    // validateInput(inputField: string) {
-    //   switch (inputField) {
-    //     case 'companyName':
-    //       this.checkInput('companyNameValidity', this.companyName);
-    //       break;
-    //     case 'location':
-    //       this.checkInput('locationValidity', this.location);
-    //       break;
-    //     case 'salary':
-    //       this.checkInput('salaryValidity', this.salary);
-    //       break;
-    //     case 'yoe':
-    //       this.checkInput('yoeValidity', this.yoe);
-    //       break;
-    //     case 'dateApplied':
-    //       this.checkInput('dateAppliedValidity', this.dateApplied);
-    //       break;
-    //     case 'jobURL':
-    //       this.checkInput('jobURLValidity', this.jobURL);
-    //       break;
-    //     case 'title':
-    //       this.checkInput('titleValidity', this.title);
-    //       break;
-    //     default:
-    //       console.warn(`Unknown inputField: ${inputField}`);
-    //   }
-    // },
-    // checkInput(this: typeof defineComponent.prototype, validityProp: keyof typeof this, value: string | null) {
-    //   if (!value || value === '') {
-    //     this.setInputValidity(validityProp, 'invalid');
-    //   } else {
-    //     this.setInputValidity(validityProp, 'valid');
-    //   }
-    // },
-    // setInputValidity(this: typeof defineComponent.prototype, prop: keyof typeof this, validity: string) {
-    //   this[prop] = validity; // Update the specific validity property
-    //   console.log(this[prop]);
-    // }
   },
   mounted() {
     this.submitData();
@@ -225,5 +243,13 @@ button:hover,
 button:active {
   background-color: #ab75e4;
   border-color: #ab75e4;
+}
+
+.form-control.invalid input {
+  border-color: red;
+}
+
+.form-control.invalid label {
+  color: red;
 }
 </style>
