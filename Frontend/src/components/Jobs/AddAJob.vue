@@ -3,10 +3,11 @@
     <form @submit.prevent="submitData">
       <h1>Add a Job</h1>
       <div class="form-control">
-        <label for="company-name" @blur="validateInput('companyName')"><b>Company Name:</b></label>
-        <input id="company-name" type="text" v-model="companyName">
+        <label for="company-name"><b>Company Name:</b></label>
+        <input id="company-name" type="text" v-model.trim="companyName" @blur="validateInput">
         <p v-if="companyNameValidity === 'invalid'">Please enter a valid company name</p>
         <p>{{ companyNameValidity }}</p>
+        <p>{{ companyName }}</p>
       </div>
       <div class="form-control">
         <label for="title"><b>Title:</b></label>
@@ -133,6 +134,14 @@ export default defineComponent({
       this.jobURL = '';
       this.title = '';
     },
+    validateInput() {
+      if (this.companyName === '') {
+        this.companyNameValidity = 'invalid';
+      }
+      else {
+        this.companyNameValidity = 'valid'
+      }
+    }
     // validateInput(inputField: string) {
     //   switch (inputField) {
     //     case 'companyName':
