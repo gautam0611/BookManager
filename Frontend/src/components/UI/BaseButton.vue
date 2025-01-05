@@ -23,6 +23,7 @@ button {
   max-width: 60rem;
   /* Constrain the maximum width */
   min-width: 20rem;
+  max-height: 10rem;
   /* Ensure a minimum size */
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
