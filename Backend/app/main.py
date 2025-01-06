@@ -22,25 +22,25 @@ CRUD Operations down below
 """
 
 
-@app.get("/job/{job_id}", response_model=schemas.Job)
-def get_jobs(job_id: int, db: Session = Depends(get_db)):
-    db_job = crud.get_job(db, job_id)
-    if not db_job:
-        raise HTTPException(status_code=404, detail="Job not found")
-    return db_job
+@app.get("/book/{book_id}", response_model=schemas.Book)
+def get_books(book_id: int, db: Session = Depends(get_db)):
+    db_book = crud.get_job(db, book_id)
+    if not db_book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return db_book
 
 
-@app.get("/all_jobs/{company_name}", response_model=schemas.Job)
-def get_all_jobs(company_name: str, db: Session = Depends(get_db)):
-    db_jobs = crud.get_all_jobs(db, company_name=company_name)
-    if not db_jobs:
-        raise HTTPException(status_code=404, detail="Jobs not found for company")
-    return db_jobs
+@app.get("/all_books/{company_name}", response_model=schemas.Book)
+def get_all_books(company_name: str, db: Session = Depends(get_db)):
+    db_books = crud.get_all_books(db, company_name=company_name)
+    if not db_books:
+        raise HTTPException(status_code=404, detail="books not found for company")
+    return db_books
 
 
-@app.post("/job", response_model=schemas.Job)
-def add_job(job: schemas.JobCreate, db: Session = Depends(get_db)):
-    db_job = schemas.JobCreate(
+@app.post("/book", response_model=schemas.Book)
+def add_book(job: schemas.BookCreate, db: Session = Depends(get_db)):
+    db_book = schemas.BookCreate(
         company_name=job.company_name,
         title=job.title,
         location=job.location,
@@ -50,20 +50,20 @@ def add_job(job: schemas.JobCreate, db: Session = Depends(get_db)):
         dateApplied=job.dateApplied,
         jobURL=job.jobURL,
     )
-    return crud.create_job(db, db_job)
+    return crud.create_job(db, db_book)
 
 
-@app.put("/job/{job_id}", response_model=schemas.Job)
-def update_job(job_id: int, new_job: schemas.JobCreate, db: Session = Depends(get_db)):
-    db_job = crud.get_job(db, job_id)
-    if not db_job:
-        raise HTTPException(status_code=404, detail="Job not found")
-    return crud.update_job(db, job_id, new_job)
+@app.put("/book/{book_id}", response_model=schemas.Book)
+def update_book(book_id: int, new_book: schemas.BookCreate, db: Session = Depends(get_db)):
+    db_book = crud.get_book(db, book_id)
+    if not db_book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return crud.update_book(db, book_id, new_book)
 
 
-@app.delete("/job/{job_id}", response_model=schemas.Job)
-def delete_job(job_id: int, db: Session = Depends(get_db)):
-    db_job = crud.get_job(db, job_id)
-    if not db_job:
-        raise HTTPException(status_code=404, detail="Job not found")
-    return crud.delete_job(db, job_id)
+@app.delete("/book/{book_id}", response_model=schemas.Book)
+def delete_book(book_id: int, db: Session = Depends(get_db)):
+    db_book = crud.get_book(db, book_id)
+    if not db_book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return crud.delete_book(db, book_id)

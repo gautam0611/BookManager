@@ -2,7 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class JobBase(BaseModel):
+class BookBase(BaseModel):
     company_name: str
     title: str
     location: str
@@ -13,12 +13,12 @@ class JobBase(BaseModel):
     jobURL: str
 
 
-class Job(JobBase):
+class Book(BookBase):
     id: int
 
     class Config:
         from_attributes = True
 
 
-class JobCreate(JobBase):
+class BookCreate(BookBase):
     pass
