@@ -2,61 +2,68 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from . import models
 
-from .schemas import Job
+from .schemas import Book
 
 
-def create_job(db: Session, job: Job):
-    db_job = models.Jobs(
-        company_name=job.company_name,
-        title=job.title,
-        location=job.location,
-        salary=job.salary,
-        yoe=job.yoe,
-        workLoc=job.workLoc,  # Ensure this matches the model
-        dateApplied=job.dateApplied,
-        jobURL=job.jobURL,
+def create_book(db: Session, book: Book):
+    db_book = models.Book(
+        title=book.title,
+        number_of_pages=book.number_of_pages,
+        author=book.author,
+        genre=book.genre,
+        published_date=book.published_date,
+        date_added=book.date_added,
     )
-    db.add(db_job)
+    # Check if the book already exists
+    existing_book = (
+        db.query(models.Book).filter(models.Book.title == book.title).first()
+    )
+    if existing_book:
+        raise HTTPException(
+            status_code=400,
+            detail="Book with this title already exists",
+        )
+    db.add(db_book)
     db.commit()
-    db.refresh(db_job)
+    db.refresh(db_book)
 
-    return db_job
+    return db_book
 
 
-def update_job(db: Session, job_id: int, updated_job: dict):
-    db_job = db.query(models.Jobs).filter(models.Jobs.id == job_id).first()
+def update_book(db: Session, book_id: int, updated_book: dict):
+    db_book = db.query(models.Books).filter(models.Books.id == book_id).first()
 
-    if not db_job:
-        raise HTTPException(status_code=404, detail="Job does not exist")
+    if not db_book:
+        raise HTTPException(status_code=404, detail="Book does not exist")
 
-    for key, val in updated_job.items():
-        if hasattr(db_job, key):
-            setattr(db_job, key, val)
+    for key, val in updated_book.items():
+        if hasattr(db_book, key):
+            setattr(db_book, key, val)
 
     db.add()
     db.commit()
-    db.refresh(db_job)
+    db.refresh(db_book)
 
-    return db_job
-
-
-def get_job(db: Session, job_id: int):
-    return db.query(models.Jobs).filter(models.Jobs.id == job_id).first()
+    return db_book
 
 
-def get_all_jobs(db: Session):
-    return db.query(models.Jobs).all()
+def get_book(db: Session, book_id: int):
+    return db.query(models.Book).filter(models.Book.id == book_id).first()
 
 
-def get_all_jobs_by_company(db: Session, company_name: str):
-    return db.query(models.Jobs).filter(models.Jobs.company_name == company_name)
+def get_all_books(db: Session):
+    return db.query(models.Book).all()
 
 
-def delete_job(db: Session, job_id: int):
+def get_all_books_by_author(db: Session, author: str):
+    return db.query(models.Book).filter(models.Book.author == author)
+
+
+def delete_book(db: Session, book_id: int):
     rows_deleted = (
-        db.query(models.Jobs)
-        .filter(models.Jobs.id == job_id)
+        db.query(models.Book)
+        .filter(models.Book.id == book_id)
         .delete(synchronize_session=False)
     )
     db.commit()  # Ensure changes are committed
-    return {"job_id": job_id, "rows_deleted": rows_deleted}
+    return {"book_id": book_id, "rows_deleted": rows_deleted}

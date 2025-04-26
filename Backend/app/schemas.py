@@ -2,24 +2,21 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class JobBase(BaseModel):
-    company_name: str
+class BookBase(BaseModel):
     title: str
-    location: str
-    salary: int
-    yoe: str
-    workLoc: str
-    dateApplied: datetime
-    jobURL: str
+    number_of_pages: int
+    author: str
+    genre: str
+    published_date: str
+    date_added: str
 
 
-class Job(JobBase):
+class Book(BookBase):
     id: int
 
     class Config:
-        # orm_mode = True
         from_attributes = True
 
 
-class JobCreate(JobBase):
+class BookCreate(BookBase):
     pass
