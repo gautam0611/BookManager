@@ -19,10 +19,9 @@ services:
     image: mysql:8.0
     container_name: bookmanager-db
     environment:
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_DATABASE: Book_Manager
-      MYSQL_ROOT_HOST: localhost
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     ports:
       - "3306:3306"
     volumes:
