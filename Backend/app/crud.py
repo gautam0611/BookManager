@@ -31,7 +31,7 @@ def create_book(db: Session, book: Book):
 
 
 def update_book(db: Session, book_id: int, updated_book: dict):
-    db_book = db.query(models.Books).filter(models.Books.id == book_id).first()
+    db_book = db.query(models.Book).filter(models.Book.id == book_id).first()
 
     if not db_book:
         raise HTTPException(status_code=404, detail="Book does not exist")
