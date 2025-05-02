@@ -8,22 +8,21 @@ from . import schemas
 from . import database
 
 from . import crud
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from jose import jwt, JWTError
+from middleware import limiter, JWTMiddleware, configure_cors
 
 app = FastAPI()
 router = APIRouter(prefix="/books", tags=["books"])
 
 # Configure CORS middleware
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["http://localhost:5173"],  # Update to match your frontend origin
-#     allow_credentials=True,
-#     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
-#     allow_headers=["*"],  # Allow all headers
-# )
+configure_cors(app)
 
-# Initailze the rate limiter
-limiter = Limiter(key_func=get_remote_address)  # get_remote_address
+# Initialize rate limiter
 app.state.limiter = limiter
+
+# JWT Middleware
+jwt_middleware = JWTMiddleware(secret_key="your_secret_key", algorithm="HS256")
 
 
 # Dependency to get DB session
