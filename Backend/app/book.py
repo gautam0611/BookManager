@@ -1,15 +1,10 @@
 from typing import List
 from fastapi import Depends, FastAPI, HTTPException, APIRouter, Request
-from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from slowapi import Limiter
-from slowapi.util import get_remote_address
 from . import schemas
 from . import database
 
 from . import crud
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import jwt, JWTError
 from middleware import limiter, JWTMiddleware, configure_cors
 
 app = FastAPI()
@@ -34,9 +29,9 @@ def get_db():
         db.close()
 
 
-"""
-CRUD Operations down below
-"""
+#####
+# Book Endpoints
+#####
 
 
 @router.post("/", response_model=schemas.BookCreate)

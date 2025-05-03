@@ -2,6 +2,9 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
+#########
+# Book Schemas
+#########
 class BookBase(BaseModel):
     title: str
     number_of_pages: int
@@ -20,3 +23,11 @@ class Book(BookBase):
 
 class BookCreate(BookBase):
     pass
+
+
+#########
+# Auth Schemas
+#########
+class CreateUser(BaseModel):
+    username: str
+    password: str

@@ -14,4 +14,12 @@ class Book(Base):
     date_added = Column(String(255), unique=True, index=True)
 
 
+class AuthUser(Base):
+    __tablename__ = "AuthUser"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String(255), unique=True, index=True)
+    pass_word = Column(String(255), unique=True, index=True)
+
+
 Base.metadata.create_all(bind=engine)
