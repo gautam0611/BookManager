@@ -1,12 +1,12 @@
 from typing import List
-from fastapi import Depends, FastAPI, HTTPException, APIRouter, Request
+from fastapi import Depends, HTTPException, APIRouter, Request
 from sqlalchemy.orm import Session
 from . import schemas
 from . import database
 from run import app
 
 from . import crud
-from middleware import limiter, JWTMiddleware, configure_cors
+from middleware import limiter, configure_cors
 
 book_router = APIRouter(prefix="/books", tags=["books"])
 
@@ -34,7 +34,7 @@ def get_db():
 #####
 
 
-@router.post("/", response_model=schemas.BookCreate)
+@book_router.post("/", response_model=schemas.BookCreate)
 @limiter.limit("5/minute")
 def create_book(
     request: Request, book: schemas.BookCreate, db: Session = Depends(get_db)
@@ -43,7 +43,7 @@ def create_book(
     return db_book
 
 
-@router.put("/{book_id}", response_model=schemas.Book)
+@book_router.put("/{book_id}", response_model=schemas.Book)
 @limiter.limit("5/minute")
 def update_book(
     request: Request, book_id: int, updated_book: dict, db: Session = Depends(get_db)
@@ -52,7 +52,7 @@ def update_book(
     return db_book
 
 
-@router.get("/{book_id}", response_model=schemas.Book)
+@book_router.get("/{book_id}", response_model=schemas.Book)
 @limiter.limit("5/minute")
 def get_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     db_book = crud.get_book(db=db, book_id=book_id)
@@ -61,14 +61,14 @@ def get_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     return db_book
 
 
-@router.get("/", response_model=List[schemas.Book])
+@book_router.get("/", response_model=List[schemas.Book])
 @limiter.limit("5/minute")
 def get_all_books(request: Request, db: Session = Depends(get_db)):
     db_books = crud.get_all_books(db=db)
     return db_books
 
 
-@router.delete("/{book_id}", response_model=schemas.Book)
+@book_router.delete("/{book_id}", response_model=schemas.Book)
 @limiter.limit("5/minute")
 def delete_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     db_book = crud.delete_book(db=db, book_id=book_id)
@@ -77,4 +77,4 @@ def delete_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     return db_book
 
 
-app.include_router(router)
+# app.include_router(book_router)

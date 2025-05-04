@@ -75,7 +75,7 @@ def delete_book(db: Session, book_id: int):
 #########
 # Auth CRUD Operations
 #########
-def create_user(db: Session, user: Book, hashed_password: str):
+def create_user(db: Session, user: Book):
     db_user = models.AuthUser(**user.model_dump())
 
     # Check if the user already exists

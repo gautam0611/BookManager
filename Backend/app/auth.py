@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, HTTPException, APIRouter, Request, status
+from fastapi import Depends, HTTPException, APIRouter, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
@@ -6,12 +6,8 @@ from app import models
 from . import schemas
 from . import database
 from . import crud
-from .utils import hash_password
-from middleware import limiter, JWTMiddleware, configure_cors
-from utils import (
-    SECRET_KEY,
-    ALGORITHM,
-    ACCESS_TOKEN_EXPIRE_MINUTES,
+from .utils import (
+    hash_password,
     create_access_token,
     verify_password,
     verify_token_access,

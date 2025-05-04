@@ -1,8 +1,5 @@
-from fastapi import Depends, FastAPI, HTTPException, APIRouter, Request
 from jose import JWTError, jwt
 from app import schemas
-from .schemas import DataToken
-from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 

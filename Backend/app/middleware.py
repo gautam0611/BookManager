@@ -1,9 +1,6 @@
 from slowapi import Limiter
 from slowapi.util import get_remote_address
-from fastapi import Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from jose import jwt, JWTError
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 # Initialize the rate limiter
 limiter = Limiter(key_func=get_remote_address)
