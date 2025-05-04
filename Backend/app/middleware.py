@@ -9,27 +9,6 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 limiter = Limiter(key_func=get_remote_address)
 
 
-# JWT Middleware
-class JWTMiddleware:
-    def __init__(self, secret_key: str, algorithm: str):
-        self.secret_key = secret_key
-        self.algorithm = algorithm
-        self.auth_scheme = HTTPBearer()
-
-    def verify_token(self, token: str):
-        try:
-            payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
-            return payload
-        except JWTError:
-            raise HTTPException(status_code=401, detail="Invalid or expired token")
-
-    def __call__(self, request: Request):
-        credentials: HTTPAuthorizationCredentials = self.auth_scheme(request)
-        if not credentials:
-            raise HTTPException(status_code=401, detail="Authorization header missing")
-        return self.verify_token(credentials.credentials)
-
-
 # CORS Middleware Configuration
 def configure_cors(app):
     app.add_middleware(

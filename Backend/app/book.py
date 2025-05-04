@@ -3,12 +3,12 @@ from fastapi import Depends, FastAPI, HTTPException, APIRouter, Request
 from sqlalchemy.orm import Session
 from . import schemas
 from . import database
+from run import app
 
 from . import crud
 from middleware import limiter, JWTMiddleware, configure_cors
 
-app = FastAPI()
-router = APIRouter(prefix="/books", tags=["books"])
+book_router = APIRouter(prefix="/books", tags=["books"])
 
 # Configure CORS middleware
 configure_cors(app)
@@ -17,7 +17,7 @@ configure_cors(app)
 app.state.limiter = limiter
 
 # JWT Middleware
-jwt_middleware = JWTMiddleware(secret_key="your_secret_key", algorithm="HS256")
+# jwt_middleware = JWTMiddleware(secret_key="your_secret_key", algorithm="HS256")
 
 
 # Dependency to get DB session

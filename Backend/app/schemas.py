@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -31,3 +32,17 @@ class BookCreate(BookBase):
 class CreateUser(BaseModel):
     username: str
     password: str
+
+
+class UserLogin(CreateUser):
+    pass
+
+
+# Tokens
+class DataToken(BaseModel):
+    id: Optional[str] = None
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
