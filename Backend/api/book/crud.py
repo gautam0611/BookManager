@@ -70,27 +70,3 @@ def delete_book(db: Session, book_id: int):
     )
     db.commit()  # Ensure changes are committed
     return {"book_id": book_id, "rows_deleted": rows_deleted}
-
-
-#########
-# Auth CRUD Operations
-#########
-def create_user(db: Session, user: Book):
-    db_user = models.AuthUser(**user.model_dump())
-
-    # Check if the user already exists
-    existing_user = (
-        db.query(models.AuthUser)
-        .filter(models.AuthUser.user_name == user.username)
-        .first()
-    )
-
-    if existing_user:
-        raise HTTPException(
-            status_code=400,
-            detail="User with this username already exists",
-        )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user

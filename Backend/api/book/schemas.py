@@ -23,25 +23,3 @@ class Book(BookBase):
 
 class BookCreate(BookBase):
     pass
-
-
-#########
-# Auth Schemas
-#########
-class CreateUser(BaseModel):
-    username: str
-    password: str
-
-
-class UserLogin(CreateUser):
-    pass
-
-
-# Tokens
-class DataToken(BaseModel):
-    id: Optional[str] = None
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
