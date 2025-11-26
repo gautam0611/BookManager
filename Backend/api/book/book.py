@@ -1,11 +1,11 @@
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter, Request
 from sqlalchemy.orm import Session
-from . import schemas
-from . import database
+from ..app import schemas
+from ..settings import database
 from run import app
 
-from . import crud
+from ..app import crud
 from middleware import limiter, configure_cors
 
 book_router = APIRouter(prefix="/books", tags=["books"])
