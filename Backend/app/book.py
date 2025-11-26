@@ -10,15 +10,6 @@ from middleware import limiter, configure_cors
 
 book_router = APIRouter(prefix="/books", tags=["books"])
 
-# Configure CORS middleware
-configure_cors(app)
-
-# Initialize rate limiter
-app.state.limiter = limiter
-
-# JWT Middleware
-# jwt_middleware = JWTMiddleware(secret_key="your_secret_key", algorithm="HS256")
-
 
 # Dependency to get DB session
 def get_db():
@@ -35,7 +26,6 @@ def get_db():
 
 
 @book_router.post("/", response_model=schemas.BookCreate)
-@limiter.limit("5/minute")
 def create_book(
     request: Request, book: schemas.BookCreate, db: Session = Depends(get_db)
 ):
@@ -44,7 +34,6 @@ def create_book(
 
 
 @book_router.put("/{book_id}", response_model=schemas.Book)
-@limiter.limit("5/minute")
 def update_book(
     request: Request, book_id: int, updated_book: dict, db: Session = Depends(get_db)
 ):
@@ -53,7 +42,6 @@ def update_book(
 
 
 @book_router.get("/{book_id}", response_model=schemas.Book)
-@limiter.limit("5/minute")
 def get_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     db_book = crud.get_book(db=db, book_id=book_id)
     if not db_book:
@@ -62,19 +50,14 @@ def get_book(request: Request, book_id: int, db: Session = Depends(get_db)):
 
 
 @book_router.get("/", response_model=List[schemas.Book])
-@limiter.limit("5/minute")
 def get_all_books(request: Request, db: Session = Depends(get_db)):
     db_books = crud.get_all_books(db=db)
     return db_books
 
 
 @book_router.delete("/{book_id}", response_model=schemas.Book)
-@limiter.limit("5/minute")
 def delete_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     db_book = crud.delete_book(db=db, book_id=book_id)
     if not db_book:
         raise HTTPException(status_code=404, detail="Book not found")
     return db_book
-
-
-# app.include_router(book_router)
