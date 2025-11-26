@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter, Request
 from sqlalchemy.orm import Session
-from ..settings import database
+from Backend.settings import database
 from Backend.api.book import crud
 from run import app
 
@@ -19,9 +19,9 @@ def get_db():
         db.close()
 
 
-#####
+#################
 # Book Endpoints
-#####
+#################
 @book_router.post("/", response_model=schemas.BookCreate)
 def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
     db_book = crud.create_book(db=db, book=book)
